@@ -21,11 +21,17 @@ using namespace cv;
 
 int main(int argc, const char * argv[])
 {
-
+	
+    if(argc != 2)
+    {
+    	cout << "Usage: ./<executable> <file_name>" << endl;
+    	return -1;
+    }
+    
     namedWindow( "" );
     moveWindow("", 0, 0);
     
-    Mat image = imread( "/Users/saburookita/Personal Projects/RobustTextDetection/TestText.png" );
+    Mat image = imread( argv[1] );
     
     /* Quite a handful or params */
     RobustTextParam param;
@@ -67,12 +73,17 @@ int main(int argc, const char * argv[])
     copy( istream_iterator<string>(iss), istream_iterator<string>(), back_inserter( splitted ) );
     
     /* And draw them on screen */
-    CvFont font = cvFontQt("Helvetica", 24.0, CV_RGB(0, 0, 0) );
-    Point coord = Point( result.second.br().x + 10, result.second.tl().y );
-    for( string& line: splitted ) {
-        addText( image, line, coord, font );
-        coord.y += 25;
+    /// TODO: try to make cvFontQt work (build opencv with qt support?)
+    for(unsigned int i=0; i<splitted.size(); i++)
+    {
+    	cout << splitted[i] << endl;
     }
+//    CvFont font = cvFontQt("Helvetica", 24.0, CV_RGB(0, 0, 0) );
+//    Point coord = Point( result.second.br().x + 10, result.second.tl().y );
+//    for( string& line: splitted ) {
+//        addText( image, line, coord, font );
+//        coord.y += 25;
+//    }
     
     rectangle( image, result.second, Scalar(0, 0, 255), 2);
     
