@@ -11,27 +11,42 @@
 #include <iterator> 
 #include <opencv2/opencv.hpp>
 #include <tesseract/baseapi.h>
+#include <unistd.h>
+#include <boost/program_options.hpp>
 
 #include "RobustTextDetection.h"
 #include "ConnectedComponent.h"
 
 using namespace std;
 using namespace cv;
-
+namespace po=boost::program_options;
 
 int main(int argc, const char * argv[])
 {
-	
-    if(argc != 2)
-    {
-    	cout << "Usage: ./<executable> <file_name>" << endl;
-    	return -1;
-    }
+    string filename_input, foldername_temp;
+
+    po::options_description desc("Options");
+    desc.add_options()
+            //("long_name,short_name", variable_assign , "message")
+            ("help,h", "Help message")
+            ("input,i", po::value<string>(&filename_input), "Image filename (required)")
+            ("temp_out,t", po::value<string>(&foldername_temp)->default_value("/tmp"), "Path to create temp image files")
+    ;
     
+    po::variables_map vm;
+    po::store(po::parse_command_line(argc, argv, desc), vm);
+    po::notify(vm);
+
+    if(!vm.count("input") || (vm.count("help")))
+    {
+        cout << desc << endl;
+        return 1;
+    }
+
     namedWindow( "" );
     moveWindow("", 0, 0);
     
-    Mat image = imread( argv[1] );
+    Mat image = imread( filename_input );
     
     /* Quite a handful or params */
     RobustTextParam param;
@@ -51,8 +66,7 @@ int main(int argc, const char * argv[])
     
     /* Apply Robust Text Detection */
     /* ... remove this temp output path if you don't want it to write temp image files */
-    string temp_output_path = "/Users/saburookita/Personal Projects/RobustTextDetection/";
-    RobustTextDetection detector(param, temp_output_path );
+    RobustTextDetection detector(param, foldername_temp );
     pair<Mat, Rect> result = detector.apply( image );
     
     /* Get the region where the candidate text is */

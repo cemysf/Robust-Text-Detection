@@ -19,9 +19,9 @@ RM=rm
 #CFLAGS=-Wall -g -fPIC -I $(DEFINES) -DSVN_REVISION=$(revision) -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
 
 #CFLAGS=-Wall -g -fPIC -I $(DEFINES) -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
-CFLAGS=-Wall -g  -std=gnu++11
+CFLAGS=-Wall -g -std=gnu++11
 #LDFLAGS=-lpthread -shared -fPIC
-LDFLAGS=-llept -ltesseract `pkg-config --static --cflags --libs opencv`
+LDFLAGS=-llept -ltesseract -lboost_program_options `pkg-config --static --cflags --libs opencv`
 OBJS=ConnectedComponent.o RobustTextDetection.o main.o
 
 
