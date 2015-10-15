@@ -1,6 +1,11 @@
 Robust-Text-Detection
 =====================
 
+Required (installing these from source code recommended):
+leptonica (version >= 1.71)
+tesseract
+	
+
 Robust Text Detection implementation based on 
 Chen, Huizhong, et al. "Robust Text Detection in Natural Images with Edge-Enhanced Maximally Stable Extremal Regions." Image Processing (ICIP), 2011 18th IEEE International Conference on. IEEE, 2011.
 
