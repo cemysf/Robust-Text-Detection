@@ -1,0 +1,11 @@
+minMSERArea,10
+maxMSERArea,2000
+cannyThresh1,20
+cannyThresh2,100
+maxConnCompCount,10000
+minConnCompArea,75
+maxConnCompArea,600
+minEccentricity,0.1
+maxEccentricity,0.995
+minSolidity,0.4
+maxStdDevMeanRatio,0.5
