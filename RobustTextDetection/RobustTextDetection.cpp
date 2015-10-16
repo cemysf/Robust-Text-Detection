@@ -10,9 +10,80 @@
 #include "ConnectedComponent.h"
 
 #include <numeric>
+#include <fstream>
+#include <string>
 
 using namespace std;
 using namespace cv;
+
+void RobustTextParam::readFromFile(string filename)
+{
+    ifstream file(filename, ios::in);
+    if(!file.is_open ())
+    {
+        cout << "Input file error" << endl;
+        return;
+    }
+
+    char separator = ',';
+    string line, param, val;
+
+    while( getline(file, line))
+    {
+
+        param = line.substr(0, line.find(separator));
+        val = line.substr(line.find(separator)+1, line.length());
+
+        if(param.compare("minMSERArea") == 0) {
+            this->minMSERArea = stoi(val);
+            cout << "minMSERArea = " << val <<endl;
+        }
+        if(param.compare("maxMSERArea") == 0) {
+            this->maxMSERArea = stoi(val);
+            cout << "maxMSERArea = " << val <<endl;
+        }
+        if(param.compare("cannyThresh1") == 0) {
+            this->cannyThresh1 = stoi(val);
+            cout << "cannyThresh1 = " << val <<endl;
+        }
+        if(param.compare("cannyThresh2") == 0) {
+            this->cannyThresh2 = stoi(val);
+            cout << "cannyThresh2 = " << val <<endl;
+        }
+        if(param.compare("maxConnCompCount") == 0) {
+            this->maxConnCompCount = stoi(val);
+            cout << "maxConnCompCount = " << val <<endl;
+        }
+        if(param.compare("minConnCompArea") == 0) {
+            this->minConnCompArea = stoi(val);
+            cout << "minConnCompArea = " << val <<endl;
+        }
+        if(param.compare("maxConnCompArea") == 0) {
+            this->maxConnCompArea = stoi(val);
+            cout << "maxConnCompArea = " << val <<endl;
+        }
+        if(param.compare("minEccentricity") == 0) {
+            this->minEccentricity = stof(val);
+            cout << "minEccentricity = " << val <<endl;
+        }
+        if(param.compare("maxEccentricity") == 0) {
+            this->maxEccentricity = stof(val);
+            cout << "maxEccentricity = " << val <<endl;
+        }
+        if(param.compare("minSolidity") == 0) {
+            this->minSolidity = stof(val);
+            cout << "minSolidity = " << val <<endl;
+        }
+        if(param.compare("maxStdDevMeanRatio") == 0) {
+            this->maxStdDevMeanRatio = stof(val);
+            cout << "maxStdDevMeanRatio = " << val <<endl;
+        }
+
+    }
+    cout << endl;
+    file.close ();
+
+}
 
 RobustTextDetection::RobustTextDetection(string temp_img_directory) {
 }

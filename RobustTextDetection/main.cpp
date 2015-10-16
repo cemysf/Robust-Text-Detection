@@ -23,7 +23,7 @@ namespace po=boost::program_options;
 
 int main(int argc, const char * argv[])
 {
-    string filename_input, foldername_temp;
+    string filename_input, foldername_temp, lang, filename_param;
 
     po::options_description desc("Options");
     desc.add_options()
@@ -31,6 +31,8 @@ int main(int argc, const char * argv[])
             ("help,h", "Help message")
             ("input,i", po::value<string>(&filename_input), "Image filename (required)")
             ("temp_out,t", po::value<string>(&foldername_temp)->default_value("/tmp"), "Path to create temp image files")
+            ("lang,l", po::value<string>(&lang)->default_value("eng"),"Language for tesseract")
+            ("param,p", po::value<string>(&filename_param)->default_value("params.txt"),"Parameter filename")
     ;
     
     po::variables_map vm;
@@ -50,19 +52,20 @@ int main(int argc, const char * argv[])
     
     /* Quite a handful or params */
     RobustTextParam param;
-    param.minMSERArea        = 10;
-    param.maxMSERArea        = 2000;
-    param.cannyThresh1       = 20;
-    param.cannyThresh2       = 100;
+    param.readFromFile(filename_param);
+//    param.minMSERArea        = 10;
+//    param.maxMSERArea        = 2000;
+//    param.cannyThresh1       = 20;
+//    param.cannyThresh2       = 100;
     
-    param.maxConnCompCount   = 3000;
-    param.minConnCompArea    = 75;
-    param.maxConnCompArea    = 600;
+//    param.maxConnCompCount   = 10000;   //3000
+//    param.minConnCompArea    = 75;
+//    param.maxConnCompArea    = 600;
     
-    param.minEccentricity    = 0.1;
-    param.maxEccentricity    = 0.995;
-    param.minSolidity        = 0.4;
-    param.maxStdDevMeanRatio = 0.5;
+//    param.minEccentricity    = 0.1;
+//    param.maxEccentricity    = 0.995;
+//    param.minSolidity        = 0.4;
+//    param.maxStdDevMeanRatio = 0.5;
     
     /* Apply Robust Text Detection */
     /* ... remove this temp output path if you don't want it to write temp image files */
@@ -76,7 +79,7 @@ int main(int argc, const char * argv[])
     
     /* Use Tesseract to try to decipher our image */
     tesseract::TessBaseAPI tesseract_api;
-    tesseract_api.Init(NULL, "eng"  );
+    tesseract_api.Init(NULL, lang.c_str());
     tesseract_api.SetImage((uchar*) stroke_width.data, stroke_width.cols, stroke_width.rows, 1, stroke_width.cols);
     
     string out = string(tesseract_api.GetUTF8Text());

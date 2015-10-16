@@ -18,8 +18,21 @@ using namespace cv;
 /**
  * Parameters for robust text detection, quite a handful
  */
+
+// TODO:create a parameter class
+template <typename T>
+class Param {
+    T parameter;
+
+public:
+    Param(T &value) { parameter = value; }
+
+};
+
+
 struct RobustTextParam {
     int minMSERArea         = 10;
+//    Param<int> minMSERArea (10);
     int maxMSERArea         = 2000;
     int cannyThresh1        = 20;
     int cannyThresh2        = 100;
@@ -32,6 +45,8 @@ struct RobustTextParam {
     float maxEccentricity    = 0.995;
     float minSolidity        = 0.4;
     float maxStdDevMeanRatio = 0.5;
+
+    void readFromFile(string filename);
 };
 
 
